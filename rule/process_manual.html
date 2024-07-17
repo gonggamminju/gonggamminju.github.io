@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>process_manual.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9A%B4%EC%98%81-%EC%A7%80%EC%B9%A8-%EB%B0%8F-%EC%A0%88%EC%B0%A8%EC%84%9C">민서네 운영 지침 및 절차서</h1>
+<ul>
+<li><a href="#%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9A%B4%EC%98%81-%EC%A7%80%EC%B9%A8-%EB%B0%8F-%EC%A0%88%EC%B0%A8%EC%84%9C">민서네 운영 지침 및 절차서</a>
+<ul>
+<li><a href="#1-%ED%99%9C%EB%8F%99-%EC%A0%9C%EC%95%88-%EB%B0%8F-%EC%8B%A4%ED%96%89-%EC%A0%88%EC%B0%A8">1. 활동 제안 및 실행 절차</a>
+<ul>
+<li><a href="#11-%EC%A0%9C%EC%95%88-%EC%A0%88%EC%B0%A8">1.1 제안 절차</a></li>
+<li><a href="#12-%EB%8B%B4%EB%8B%B9-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90-%EC%84%A0%EC%A0%95">1.2 담당 운영 위원 선정</a></li>
+<li><a href="#13-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%EC%97%AD%ED%95%A0">1.3 운영 위원의 역할</a></li>
+<li><a href="#14-%EA%B8%B0%ED%9A%8D%EC%95%88-%EC%8A%B9%EC%9D%B8-%EC%A0%88%EC%B0%A8">1.4 기획안 승인 절차</a></li>
+<li><a href="#15-%EC%8A%B9%EC%9D%B8%EB%90%9C-%EA%B8%B0%ED%9A%8D%EC%9D%98-%EC%8B%A4%ED%96%89">1.5 승인된 기획의 실행</a></li>
+<li><a href="#16-%ED%8C%A8%EC%8A%A4%ED%8A%B8-%ED%8A%B8%EB%9E%99-%EC%A0%9C%EC%95%88">1.6 패스트 트랙 제안</a></li>
+<li><a href="#17-%ED%8C%A8%EC%8A%A4%ED%8A%B8-%ED%8A%B8%EB%9E%99-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90-%EC%84%A0%EC%A0%95-%EB%B0%A9%EC%8B%9D">1.7 패스트 트랙 운영 위원 선정 방식</a></li>
+<li><a href="#18-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%EC%9D%98%EB%AC%B4">1.8 운영 위원의 의무</a></li>
+</ul>
+</li>
+<li><a href="#2-%EB%8C%80%EC%99%B8-%ED%99%9C%EB%8F%99-%EA%B7%9C%EC%A0%95-%EB%B0%8F-%EC%A0%88%EC%B0%A8">2. 대외 활동 규정 및 절차</a>
+<ul>
+<li><a href="#21-%EC%A0%95%EC%9D%98">2.1 정의</a></li>
+<li><a href="#22-%EC%8A%B9%EC%9D%B8-%EC%A0%88%EC%B0%A8">2.2 승인 절차</a></li>
+<li><a href="#23-%EC%8A%B9%EC%9D%B8-%EA%B8%B0%EC%A4%80">2.3 승인 기준</a></li>
+<li><a href="#24-%EC%8B%A0%EC%86%8D-%EC%B2%98%EB%A6%AC-%EC%A0%88%EC%B0%A8">2.4 신속 처리 절차</a></li>
+</ul>
+</li>
+<li><a href="#3-%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9C%84%EC%9B%90%EC%9E%A5%EC%9D%98-%ED%83%84%ED%95%B5-%EB%B0%8F-%EC%82%AC%EC%9E%84-%EC%A0%88%EC%B0%A8">3. 민서네 위원장의 탄핵 및 사임 절차</a>
+<ul>
+<li><a href="#31-%ED%83%84%ED%95%B5-%EC%82%AC%EC%9C%A0">3.1 탄핵 사유</a></li>
+<li><a href="#32-%ED%83%84%ED%95%B5%EC%95%88%EC%9D%98-%EB%B0%9C%EC%9D%98-%EB%B0%8F-%EC%83%81%EC%A0%95">3.2 탄핵안의 발의 및 상정</a></li>
+<li><a href="#33-%ED%83%84%ED%95%B5%EC%95%88-%EC%83%81%EC%A0%95-%ED%9B%84-%EC%A0%88%EC%B0%A8">3.3 탄핵안 상정 후 절차</a></li>
+<li><a href="#34-%ED%83%84%ED%95%B5%EC%9D%98-%EA%B2%B0%EC%A0%95">3.4 탄핵의 결정</a></li>
+<li><a href="#35-%ED%83%84%ED%95%B5%EC%9D%98-%EA%B8%B0%EA%B0%81">3.5 탄핵의 기각</a></li>
+<li><a href="#36-%EC%82%AC%EC%9E%84">3.6 사임</a></li>
+</ul>
+</li>
+<li><a href="#4-%EC%8B%A0%EC%9E%84-%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9C%84%EC%9B%90%EC%9E%A5%EC%9D%98-%EC%84%A0%EC%B6%9C-%EC%A0%88%EC%B0%A8">4. 신임 민서네 위원장의 선출 절차</a></li>
+<li><a href="#5-%EB%AF%BC%EC%84%9C%EB%84%A4-%EB%B6%80%EC%9C%84%EC%9B%90%EC%9E%A5-%EB%B0%8F-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%ED%95%B4%EC%9E%84%EC%82%AC%EC%9E%84-%EC%A0%88%EC%B0%A8">5. 민서네 부위원장 및 운영 위원의 해임(사임) 절차</a>
+<ul>
+<li><a href="#51-%ED%95%B4%EC%9E%84-%EA%B1%B4%EC%9D%98%EC%95%88%EC%9D%98-%EB%B0%9C%EC%9D%98">5.1 해임 건의안의 발의</a></li>
+<li><a href="#52-%ED%88%AC%ED%91%9C-%EC%9D%BC%EC%8B%9C-%EB%B0%8F-%EC%9E%A5%EC%86%8C-%EA%B2%B0%EC%A0%95">5.2 투표 일시 및 장소 결정</a></li>
+<li><a href="#53-%ED%88%AC%ED%91%9C%EA%B6%8C-%EC%9C%84%EC%9E%84">5.3 투표권 위임</a></li>
+<li><a href="#54-%ED%86%A0%EB%A1%A0-%EB%B0%8F-%ED%88%AC%ED%91%9C">5.4 토론 및 투표</a></li>
+<li><a href="#55-%ED%95%B4%EC%9E%84%EC%9D%98-%EA%B2%B0%EC%A0%95">5.5 해임의 결정</a></li>
+<li><a href="#56-%EC%82%AC%EC%9E%84">5.6 사임</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-%ED%99%9C%EB%8F%99-%EC%A0%9C%EC%95%88-%EB%B0%8F-%EC%8B%A4%ED%96%89-%EC%A0%88%EC%B0%A8">1. 활동 제안 및 실행 절차</h2>
+<h3 id="11-%EC%A0%9C%EC%95%88-%EC%A0%88%EC%B0%A8">1.1 제안 절차</h3>
+<ol>
+<li>민서네 위원은 누구나 활동 기획을 제안할 수 있다.</li>
+<li>활동 기획의 제안은 활동기획제안서(이하 제안서)의 작성을 통해 실행된다.</li>
+<li>제안서 작성 시 어려움이 있는 경우, 활동 지원 위원회에 도움을 요청할 수 있다.</li>
+<li>완성된 제안서를 지정된 온라인 플랫폼에 게시하여 제출한다.</li>
+</ol>
+<h3 id="12-%EB%8B%B4%EB%8B%B9-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90-%EC%84%A0%EC%A0%95">1.2 담당 운영 위원 선정</h3>
+<ol>
+<li>제안자는 온라인 플랫폼을 통해 자신의 제안 내용을 알리고, 해당 제안을 책임감 있게 주도할 운영 위원을 직접 찾아야 한다.</li>
+<li>담당 운영 위원이 확정되면, 제안서가 게시된 온라인 플랫폼의 댓글 등을 통해 이를 공지해야 한다.</li>
+</ol>
+<h3 id="13-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%EC%97%AD%ED%95%A0">1.3 운영 위원의 역할</h3>
+<ol>
+<li>담당 운영 위원은 해당 제안에 대한 책임을 맡게 된 사실을 운영 위원회에 보고해야 한다.</li>
+<li>운영 위원은 제안자와의 심도 있는 논의를 통해 보다 구체적이고 실행 가능한 기획서를 작성해야 한다.</li>
+<li>기획서 작성 단계에서 공론화 위원회에 토론을 제안하거나 활동 지원 위원회에 절차적 자문을 구할 수 있다.</li>
+</ol>
+<h3 id="14-%EA%B8%B0%ED%9A%8D%EC%95%88-%EC%8A%B9%EC%9D%B8-%EC%A0%88%EC%B0%A8">1.4 기획안 승인 절차</h3>
+<ol>
+<li>완성된 기획안은 운영 위원회에서의 찬반 투표에 앞서 발표를 통해 활동의 목적 및 예상 성과 등을 공유해야 한다.</li>
+<li>발표 이후 반대 의견에 대한 충분한 청취 과정을 거친다.</li>
+<li>활동 제안자는 활동 담당 위원을 지원하기 위하여 운영 위원회에 참가할 수 있다.</li>
+<li>과반수의 찬성을 얻은 기획은 계획대로 진행되며, 그렇지 않은 경우 해당 기획은 폐기된다.</li>
+<li>기획이 무산될 경우, 반대 의견을 체계적으로 정리하여 민서네 전체 위원에게 공지해야 한다. 이때 의견 제시자의 익명성은 엄격히 보장되어야 한다.</li>
+</ol>
+<h3 id="15-%EC%8A%B9%EC%9D%B8%EB%90%9C-%EA%B8%B0%ED%9A%8D%EC%9D%98-%EC%8B%A4%ED%96%89">1.5 승인된 기획의 실행</h3>
+<ol>
+<li>필요시 민서네 위원장에게 비상설 위원회 소집을 공식적으로 요청할 수 있다.</li>
+<li>활동 지원 위원회에 전문적인 지원과 조언을 요청할 수 있다.</li>
+</ol>
+<h3 id="16-%ED%8C%A8%EC%8A%A4%ED%8A%B8-%ED%8A%B8%EB%9E%99-%EC%A0%9C%EC%95%88">1.6 패스트 트랙 제안</h3>
+<ol>
+<li>민서네 위원이 담당 운영 위원을 찾지 못한 경우, 민서네 위원장에게 직접 제안할 수 있다.</li>
+<li>민서네 위원장은 제안 내용을 검토 후 진행 여부를 결정한다.</li>
+<li>진행이 결정된 경우, 민서네 위원장의 재량으로 적합한 담당 운영 위원을 선정할 수 있다.</li>
+</ol>
+<h3 id="17-%ED%8C%A8%EC%8A%A4%ED%8A%B8-%ED%8A%B8%EB%9E%99-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90-%EC%84%A0%EC%A0%95-%EB%B0%A9%EC%8B%9D">1.7 패스트 트랙 운영 위원 선정 방식</h3>
+<ol>
+<li>운영 위원 선발 시, 민서네 위원장이 임의의 방식으로 담당 순번을 미리 선정한다.</li>
+<li>패스트 트랙을 통해 결정된 제안 또는 기획의 담당 운영 위원을 민서네 위원장이 순번에 따라 배정한다.</li>
+<li>운영 위원이 하나의 제안 또는 기획을 담당하게 되면, 형평성을 유지하기 위해 그 운영 위원의 순번은 자동으로 마지막으로 이동된다.</li>
+</ol>
+<h3 id="18-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%EC%9D%98%EB%AC%B4">1.8 운영 위원의 의무</h3>
+<ol>
+<li>운영 위원은 자신이 맡은 제안·기획 업무가 승인처리가 될 수 있도록 전문성과 열정을 바탕으로 최선을 다해야 한다.</li>
+<li>운영 위원은 자신이 맡은 제안·기획 업무가 성공적으로 완료될 수 있도록 전문성과 열정을 바탕으로 최선을 다해야 한다.</li>
+</ol>
+<figure>
+  <img src="images/process_1.png" alt="제안1">
+</figure>
+<figure>
+  <img src="images/process_2.png" alt="제안2">
+  <figcaption>그림1. 활동 제안과 실행 절차 흐름도</figcaption>
+</figure>
+<h2 id="2-%EB%8C%80%EC%99%B8-%ED%99%9C%EB%8F%99-%EA%B7%9C%EC%A0%95-%EB%B0%8F-%EC%A0%88%EC%B0%A8">2. 대외 활동 규정 및 절차</h2>
+<h3 id="21-%EC%A0%95%EC%9D%98">2.1 정의</h3>
+<p>민서네의 공식 명의로 문서를 발행하거나 민서네를 대표하여 수행하는 모든 활동을 대외 활동으로 규정한다.</p>
+<h3 id="22-%EC%8A%B9%EC%9D%B8-%EC%A0%88%EC%B0%A8">2.2 승인 절차</h3>
+<ol>
+<li>대외 활동 역시 기존의 활동 제안 및 실행 절차를 따른다.</li>
+<li>기획서 작성 단계에서 반드시 공론화 위원회를 통해 민서네 전체 위원들의 다양한 의견을 수렴하고 이를 반영해야 한다.</li>
+<li>운영 위원회에서 가결된 대외 활동 안건은 최종적으로 민서네 전체 위원들의 투표를 거쳐 결정한다.</li>
+<li>민서네 전체 위원들의 투표는 민서네의 공식 온라인 플랫폼을 통해 진행한다.</li>
+<li>민서네 전체 위원들의 투표 기간은 3일로 설정하나, 민서네 위원장의 판단에 따라 조정할 수 있다.</li>
+</ol>
+<h3 id="23-%EC%8A%B9%EC%9D%B8-%EA%B8%B0%EC%A4%80">2.3 승인 기준</h3>
+<ol>
+<li>대외 활동의 승인은 민서네 전체 위원의 30% 이상이 투표에 참여하고, 투표 참여 인원의 과반수의 찬성을 얻어야 최종승인 된다.</li>
+<li>투표 참여율이 민서네 전체 위원의 30% 미만인 경우, 해당 안건은 무효로 처리된다.</li>
+</ol>
+<h3 id="24-%EC%8B%A0%EC%86%8D-%EC%B2%98%EB%A6%AC-%EC%A0%88%EC%B0%A8">2.4 신속 처리 절차</h3>
+<ol>
+<li>신속한 대외 활동이 요구되는 긴급 상황에서는 민서네 위원장이 운영 위원회의 동의를 얻어 임시 성명서를 발표하거나 긴급 대응 활동을 수행할 수 있다.</li>
+<li>이 경우, 공론화 위원회와 민서네 전체 위원들의 투표도 생략할 수 있다.</li>
+</ol>
+<h2 id="3-%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9C%84%EC%9B%90%EC%9E%A5%EC%9D%98-%ED%83%84%ED%95%B5-%EB%B0%8F-%EC%82%AC%EC%9E%84-%EC%A0%88%EC%B0%A8">3. 민서네 위원장의 탄핵 및 사임 절차</h2>
+<h3 id="31-%ED%83%84%ED%95%B5-%EC%82%AC%EC%9C%A0">3.1 탄핵 사유</h3>
+<ol>
+<li>중대한 명예훼손: 민서네의 공적 이미지와 신뢰도를 현저히 저해하는 언행을 한 경우</li>
+<li>직무 유기: 합당한 사유 없이 회의를 지속적으로 연기하거나 불참하는 행위, 또는 회의록 작성을 소홀히 하는 등 직무를 성실히 수행하지 않는 경우</li>
+<li>정보관리의 부실: 민서네 전체 위원들의 개인정보를 부주의하게 관리하여 유출한 경우</li>
+</ol>
+<h3 id="32-%ED%83%84%ED%95%B5%EC%95%88%EC%9D%98-%EB%B0%9C%EC%9D%98-%EB%B0%8F-%EC%83%81%EC%A0%95">3.2 탄핵안의 발의 및 상정</h3>
+<ol>
+<li>운영 위원 또는 민서네 위원은 온라인 플랫폼을 통해 탄핵안을 발의할 수 있다.</li>
+<li>운영 위원이 발의한 탄핵안은 민서네 전체 위원의 20% 이상이 동의하면 상정된다.</li>
+<li>민서네 위원은 한 달 이내에 민서네 전체 위원의 10% 이상이 서명한 탄핵안을 제출하여 발의할 수 있고, 제출과 동시에 탄핵안이 상정된다.</li>
+<li>탄핵안이 정식으로 상정되는 즉시, 민서네 부위원장에게 민서네 위원장의 모든 권한이 자동으로 위임된다.</li>
+</ol>
+<h3 id="33-%ED%83%84%ED%95%B5%EC%95%88-%EC%83%81%EC%A0%95-%ED%9B%84-%EC%A0%88%EC%B0%A8">3.3 탄핵안 상정 후 절차</h3>
+<ol>
+<li>탄핵안이 상정된 후 1주일 동안 민서네 위원장에게 소명 기회가 주어진다.</li>
+<li>소명 기간 종료 후, 3일간 민서네 전체 위원들은 투표를 진행한다.</li>
+</ol>
+<h3 id="34-%ED%83%84%ED%95%B5%EC%9D%98-%EA%B2%B0%EC%A0%95">3.4 탄핵의 결정</h3>
+<ol>
+<li>민서네 전체 위원의 30% 이상이 투표에 참여하고, 투표 참여 인원의 과반수 찬성으로 탄핵이 가결된다.</li>
+<li>탄핵이 가결되면 민서네 위원장직은 공석이 된다.</li>
+<li>탄핵당한 민서네 위원장은 1주일 이내에, 서울시당에 공식적으로 사직서를 제출해야 한다.</li>
+</ol>
+<h3 id="35-%ED%83%84%ED%95%B5%EC%9D%98-%EA%B8%B0%EA%B0%81">3.5 탄핵의 기각</h3>
+<p>탄핵이 기각된 경우, 민서네 위원장은 민서네 부위원장으로부터 위임받은 모든 권한을 즉시 회복한다.</p>
+<h3 id="36-%EC%82%AC%EC%9E%84">3.6 사임</h3>
+<p>민서네 위원장이 개인적 사유나 불가항력적 상황으로 인해 직무 수행이 불가능하다고 판단할 경우, 민서네 부위원장에게 모든 권한을 위임하고 사임할 수 있다.</p>
+<figure>
+  <img src="images/impeachment_1.png" alt="탄핵1">
+</figure>
+<figure>
+  <img src="images/impeachment_2.png" alt="탄핵">
+</figure>
+<figure>
+  <img src="images/impeachment_3.png" alt="탄핵">
+  <figcaption>그림2. 민서네 위원장의 탄핵절차 흐름도</figcaption>
+</figure>
+<h2 id="4-%EC%8B%A0%EC%9E%84-%EB%AF%BC%EC%84%9C%EB%84%A4-%EC%9C%84%EC%9B%90%EC%9E%A5%EC%9D%98-%EC%84%A0%EC%B6%9C-%EC%A0%88%EC%B0%A8">4. 신임 민서네 위원장의 선출 절차</h2>
+<ol>
+<li>민서네 위원장직이 공석이 되면, 운영 위원회는 비상대책위원회로 전환되며, 기존의 민서네 부위원장은 비상대책위원회의 장으로 임명되고 운영 위원들은 그 직위를 유지한다.</li>
+<li>비상대책위원회는 새로운 민서네 위원장 선출을 위한 선거를 준비하고 관리하는 임시기구로서, 선거 외의 다른 새로운 기획을 추진할 수 없으며, 현재 진행 중인 활동 등이 원활히 수행될 수 있도록 관리할 책임이 있다.</li>
+<li>신임 민서네 위원장의 선거는 더불어민주당 중앙당의 투표시스템을 활용하는 것을 원칙으로 하나 불가피한 경우 민서네 공식 플랫폼의 투표시스템을 활용할 수 있다.</li>
+<li>비상대책위원회가 구성되는 즉시, 1주일간의 신임 민서네 위원장의 후보를 모집하고, 이어서 1주일간 후보자 토론 및 선거운동 기간을 갖는다. 그리고 3일간 투표를 진행하여 신임 민서네 위원장을 선출한다.</li>
+<li>비상대책위원장이 위원장 선거에 출마하고자 할 경우, 현 운영 위원 중 1인에게 비상대책원장직을 이양해야 한다.</li>
+</ol>
+<figure>
+  <img src="images/new_leader.png" alt="신임 위원장">
+  <figcaption>그림3. 신임 민서네 위원장의 선출 절차 흐름도</figcaption>
+</figure>
+<h2 id="5-%EB%AF%BC%EC%84%9C%EB%84%A4-%EB%B6%80%EC%9C%84%EC%9B%90%EC%9E%A5-%EB%B0%8F-%EC%9A%B4%EC%98%81-%EC%9C%84%EC%9B%90%EC%9D%98-%ED%95%B4%EC%9E%84%EC%82%AC%EC%9E%84-%EC%A0%88%EC%B0%A8">5. 민서네 부위원장 및 운영 위원의 해임(사임) 절차</h2>
+<h3 id="51-%ED%95%B4%EC%9E%84-%EA%B1%B4%EC%9D%98%EC%95%88%EC%9D%98-%EB%B0%9C%EC%9D%98">5.1 해임 건의안의 발의</h3>
+<ol>
+<li>민서네 위원장과 민서네 부위원장은 운영 위원에 대한, 운영 위원은 민서네 부위원장과 다른 운영 위원에 대한 해임 건의안을 온라인 플랫폼을 통해 발의할 수 있다.</li>
+<li>민서네 위원은 민서네 부위원장, 운영 위원에 대한 해임 건의안을 온라인 플랫폼을 통해 발의할 수 있다.</li>
+<li>민서네 부위원장과 운영 위원을 겸임하는 경우, 각 직책에 대해 개별적으로 해임 건의안을 발의해야 한다.</li>
+<li>해임 건의안은 전체 운영 위원들의 과반 동의로 상정된다.</li>
+<li>해임 건의안이 상정되더라도 해당 운영 위원의 직무수행 권한은 즉시 정지되지 않는다.</li>
+</ol>
+<h3 id="52-%ED%88%AC%ED%91%9C-%EC%9D%BC%EC%8B%9C-%EB%B0%8F-%EC%9E%A5%EC%86%8C-%EA%B2%B0%EC%A0%95">5.2 투표 일시 및 장소 결정</h3>
+<ol>
+<li>해임 건의안이 상정되면, 민서네 위원장이 즉시 투표 일시와 장소를 정한다.</li>
+<li>투표는 해임 건의안 상정 이후 일주일 이내에 실행되어야 한다.</li>
+<li>온라인 또는 오프라인 방식으로 진행할 수 있다.</li>
+</ol>
+<h3 id="53-%ED%88%AC%ED%91%9C%EA%B6%8C-%EC%9C%84%EC%9E%84">5.3 투표권 위임</h3>
+<ol>
+<li>투표권을 가진 운영 위원이 해당 투표에 참석할 수 없는 경우, 자신의 투표권을 민서네 위원장에게 위임할 수 있다.</li>
+<li>투표권 위임은 위임장을 통해 명시적으로 이루어져야 한다.</li>
+<li>투표 참여에 대한 위임일 뿐, 찬반에 대한 결정 권한은 민서네 위원장에게 있다.</li>
+</ol>
+<h3 id="54-%ED%86%A0%EB%A1%A0-%EB%B0%8F-%ED%88%AC%ED%91%9C">5.4 토론 및 투표</h3>
+<ol>
+<li>지정된 일시와 장소에서 해임 건의안에 관해 토론 후 최종 투표를 진행한다.</li>
+<li>투표 참여 인원의 3분의 2 이상이 찬성할 경우, 해당 민서네 부위원장 또는 운영 위원은 즉시 해임된다.</li>
+</ol>
+<h3 id="55-%ED%95%B4%EC%9E%84%EC%9D%98-%EA%B2%B0%EC%A0%95">5.5 해임의 결정</h3>
+<p>해임이 결정된 민서네 부위원장 또는 운영 위원은 일주일 이내에 사직서를 서울시당에 제출한다.</p>
+<h3 id="56-%EC%82%AC%EC%9E%84">5.6 사임</h3>
+<ol>
+<li>사임을 원하는 민서네 부위원장 또는 운영 위원은 민서네 위원장에게 사임 의사를 밝혀야 한다.</li>
+<li>민서네 위원장은 사임 일시를 당사자와 상의하여 정하고 온라인 플랫폼에 공지한다.</li>
+<li>사임하는 민서네 부위원장 및 운영 위원은 사임 일시에 맞춰 서울시당에 사직서를 제출한다.</li>
+</ol>
+<figure>
+  <img src="images/fire.png" alt="해임">
+  <figcaption>그림4. 민서네 부위원장 및 운영 위원의 해임 절차 흐름도</figcaption>
+</figure>
+
+</body>
+</html>
